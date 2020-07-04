@@ -55,12 +55,39 @@ public class Server {
         }
     }
 
+    void sendMsgToUser(String msg,String user){
+        for (ClientHandler client : clients) {
+            if(client.getNick().equals(user)){
+                client.sendMsg(msg);
+            }
+        }
+    }
+
+    void sendMsgToGroup(String msg, String... users){
+        for (ClientHandler client : clients) {
+            for (String user: users) {
+                if(client.getNick().equals(user)){
+                    client.sendMsg(msg);
+                }
+            }
+        }
+    }
+
     public void subscribe(ClientHandler clientHandler){
         clients.add(clientHandler);
     }
 
     public void unsubscribe(ClientHandler clientHandler){
         clients.remove(clientHandler);
+    }
+
+    public Boolean isLoggedIn(String nickName){
+        for (ClientHandler client: clients) {
+            if(client.getNick().equals(nickName)){
+                return true;
+            }
+        }
+        return false;
     }
 
 }
